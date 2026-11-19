@@ -1,0 +1,14 @@
+.component-host {
+  padding: 24px;
+}
+
+.component-host > section {
+  min-width: 0;
+  margin-bottom: 24px;
+}
+
+.component-host web-component-book-library-app,
+.component-host web-component-goals-tracker,
+.component-host web-component-todo-list {
+  display: block;
+}
