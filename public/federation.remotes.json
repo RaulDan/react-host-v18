@@ -1,0 +1,5 @@
+[
+  { "name": "book_library", "entry": "http://localhost:4200/remoteEntry.js", "type": "module" },
+  { "name": "goals_tracker", "entry": "http://localhost:5000/remoteEntry.js", "type": "module" },
+  { "name": "todo_list", "entry": "http://localhost:3000/remoteEntry.js", "type": "var" }
+]
