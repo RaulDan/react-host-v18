@@ -11,7 +11,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start:single-spa": "vite"
+    "start:single-spa": "vite",
+    "build:single-spa": "tsc -b && vite build"
   },
   "dependencies": {
     "react": "^18.3.1",
