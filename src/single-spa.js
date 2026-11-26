@@ -11,14 +11,19 @@ function pathname() {
   return location.pathname.replace(/\/+$/, '') || '/';
 }
 
+function matchesAppRoute(path, app) {
+  return path === app.route || (app.name === 'books' && path.startsWith(`${app.route}/`));
+}
+
 function updateLayout() {
   const path = pathname();
+  document.getElementById('mfe-apps').classList.toggle('all-together', path === '/all-together');
   document.querySelectorAll('[data-mfe]').forEach((section) => {
     const app = apps.find((item) => item.name === section.dataset.mfe);
-    section.hidden = !app || (path !== '/' && path !== app.route);
+    section.hidden = !app || (path !== '/' && path !== '/all-together' && !matchesAppRoute(path, app));
   });
   document.getElementById('mfe-not-found').hidden =
-    path === '/' || apps.some((app) => app.route === path);
+    path === '/' || path === '/all-together' || apps.some((app) => matchesAppRoute(path, app));
   document.querySelectorAll('[data-mfe-link]').forEach((link) => {
     if (link.getAttribute('href') === path) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
@@ -48,8 +53,11 @@ function initialize() {
           throw error;
         }
       },
-      activeWhen: () => pathname() === '/' || pathname() === app.route,
-      customProps: { domElement: document.getElementById(`mfe-${app.name}`) },
+      activeWhen: () => pathname() === '/' || pathname() === '/all-together' || matchesAppRoute(pathname(), app),
+      customProps: {
+        domElement: document.getElementById(`mfe-${app.name}`),
+        ...(app.name === 'books' ? { bookRouting: { basePath: app.route, sharedPaths: ['/', '/all-together'] } } : {}),
+      },
     });
   }
   addErrorHandler((error) => showError(error.appOrParcelName, error));

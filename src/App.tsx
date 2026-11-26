@@ -7,9 +7,10 @@ function App() {
         <a data-mfe-link href="/angular">Angular books</a>
         <a data-mfe-link href="/react">React to-do list</a>
         <a data-mfe-link href="/svelte">Svelte goals</a>
+        <a data-mfe-link href="/all-together">All together</a>
       </nav>
       <p id="mfe-not-found" hidden>Page not found. Use the navigation above.</p>
-      <div className="mfe-apps">
+      <div className="mfe-apps" id="mfe-apps">
         {['books', 'todos', 'goals'].map((name) => (
           <section className="mfe-app" data-mfe={name} key={name}>
             <div className="mfe-error" id={`mfe-error-${name}`} role="alert" hidden>

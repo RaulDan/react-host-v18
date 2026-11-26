@@ -37,6 +37,20 @@ body {
   gap: 20px;
 }
 
+.mfe-apps.all-together {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.mfe-apps.all-together .mfe-app {
+  flex: 1 0 400px;
+}
+
+.mfe-apps.all-together [data-mfe="books"] {
+  flex-basis: 650px;
+}
+
 .mfe-app {
   min-width: 0;
   background: white;
