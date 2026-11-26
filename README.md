@@ -1,5 +1,14 @@
 # React + TypeScript + Vite
 
+## Single-spa host
+
+The host registers the book, to-do, and goals microfrontends in
+`src/single-spa.js`. Run `npm run start:single-spa` when their servers and
+mock APIs are already running. The workspace's `npm run dev:single-spa`
+is optional; the remotes can instead be started individually or with
+`../start-apps.sh`. See `../SINGLE-SPA.md` for ports and optional runtime URL
+overrides.
+
 ## Web Component host
 
 Build the sibling components first: `npm run build-web-elem-angular` in

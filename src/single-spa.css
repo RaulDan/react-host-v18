@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: #172033;
+  background: #f4f6fb;
+}
+
+.mfe-shell {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.mfe-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.mfe-nav a {
+  color: #1747a6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #e4ebfa;
+}
+
+.mfe-nav a[aria-current="page"] {
+  background: #1747a6;
+  color: white;
+}
+
+.mfe-apps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  align-items: start;
+  gap: 20px;
+}
+
+.mfe-app {
+  min-width: 0;
+  background: white;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+[hidden] { display: none !important; }
+.mfe-error { padding: 16px; color: #a21313; }
+[data-mfe="books"] * { box-sizing: border-box; }
