@@ -1,0 +1,5 @@
+{
+  "book_library": "http://localhost:4200/remoteEntry.js",
+  "goals_tracker": "http://localhost:5000/remoteEntry.js",
+  "todo_list": "http://localhost:3000/remoteEntry.js"
+}

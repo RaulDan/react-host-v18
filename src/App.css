@@ -1,14 +1,12 @@
-.component-host {
-  padding: 24px;
+header, .component-host { padding: 24px; }
+header { border-bottom: 1px solid #d7dce3; }
+nav { display: flex; flex-wrap: wrap; gap: 16px; }
+a { color: #2452a1; }
+a.active { font-weight: 700; }
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: 24px;
 }
-
-.component-host > section {
-  min-width: 0;
-  margin-bottom: 24px;
-}
-
-.component-host web-component-book-library-app,
-.component-host web-component-goals-tracker,
-.component-host web-component-todo-list {
-  display: block;
-}
+.dashboard section { min-width: 0; overflow: auto; }
+[role="alert"] { color: #a11919; }

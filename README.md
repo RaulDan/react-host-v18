@@ -1,92 +1,51 @@
-# React + TypeScript + Vite
+# React 18 Module Federation host
 
-## Web Component host
-
-Build the sibling components first: `npm run build-web-elem-angular` in
-`book-library-angular`, `npm run build-web-component-react` in `to-do-list-react`,
-and `npm run build-web-component-svelte` in `goals-tracker`.
-
-Run `npm run start-react-v18-host` and open `http://localhost:3001/`.
-Startup and `npm run build` automatically copy these component builds into
-the host's public assets. After rebuilding a child component, run
-`npm run sync:web-components` and reload the host.
-
-Run `npm run start:mock-server` in each child project for APIs on ports
-7002 (books), 7000 (to-dos), and 7001 (goals). Child frontend servers are not needed.
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```sh
+npm ci
+npm start
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Open `http://localhost:3001/`. `npm run start-react-v18-host` remains an alias.
+The dashboard loads all three apps; `/books`, `/goals`, and `/todos` display
+individual remotes. The Angular host can run concurrently at port 4201.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Start the remotes
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Run `npm ci`, `npm run serve:federation`, and (in a separate terminal)
+`npm run start:mock-server` in each remote project.
 
+| Remote | Federation entry | API |
+| --- | --- | --- |
+| book-library-angular | http://localhost:4200/remoteEntry.js | http://localhost:7002 |
+| goals-tracker | http://localhost:5000/remoteEntry.js | http://localhost:7001 |
+| to-do-list-react | http://localhost:3000/remoteEntry.js | http://localhost:7000 |
+
+Standalone development and federation serving use the same remote ports; stop
+the standalone server before starting federation serving. Existing standalone
+builds/commands remain available.
+
+## Configuration and lifecycle
+
+Edit `public/federation.remotes.json` to change remote deployment URLs. Reload
+after configuration changes or a failed load. Each panel loads `./mount` through
+the enhanced runtime, displays loading/errors independently, and disposes its
+application when navigating away. Cancelled/late mounts and StrictMode effect
+replay own separate targets and cannot clear a newer activation.
+
+This host uses React 18.3.1; to-do retains its own React 19 runtime. Angular and
+Svelte remotes also own their runtimes and Shadow DOM styles. The React Compiler
+Babel setup was removed to avoid targeting React 19 from a React 18 host.
+There is no web-component copying/prebuild prerequisite.
+
+## Build and deploy
+
+```sh
+npm run build
+npm run lint
+npm run preview
 ```
+
+Publish `dist`, configure its `federation.remotes.json`, and provide `index.html`
+fallback for direct-route refreshes. Publish remote federation entries and every
+associated chunk independently, with CORS allowing both host origins. Use HTTPS
+remote entries for an HTTPS host. Host builds do not require sibling artifacts.
